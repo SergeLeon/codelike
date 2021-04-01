@@ -42,8 +42,30 @@ class Game:
 
             user_input = self.cons.multiline_input()
 
+            code_lines = user_input.split("\n")
+
+            step_needed_code = ["self.map.refresh()",
+                                "hero_x, hero_y = self.hero.get_xy()",
+                                "left = self.map[hero_y][hero_x - 1]",
+                                "right = self.map[hero_y][hero_x + 1]",
+                                "up = self.map[hero_y - 1][hero_x]",
+                                "down = self.map[hero_y + 1][hero_x]"]
+
+            # добавление строк кода необходимых для правильной работы циклов с использованием interact
+            for i in reversed(range(len(code_lines))):
+                line = code_lines[i]
+                line = line.expandtabs(4)
+                code_lines[i] = line
+                if "interact" in line.lower():
+                    line = line.expandtabs(4)
+                    diff = len(line) - len(line.lstrip())
+                    for code in reversed(step_needed_code):
+                        code_lines.insert(i, ' ' * diff + code)
+
+            code_lines = "\n".join(code_lines)
+
             self.cons.set_locals(locals())
-            self.cons.run_code(user_input)
+            self.cons.run_code(code_lines)
 
 
 def main():
