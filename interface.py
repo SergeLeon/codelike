@@ -34,7 +34,7 @@ class Interface:
             sizex = right - left + 1
             sizey = bottom - top + 1
         else:
-            sizex, sizey = 80, 25  # can't determine actual size - return default values
+            sizex, sizey = 80, 25
         return [sizex, sizey]
 
     @staticmethod
